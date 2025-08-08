@@ -41,7 +41,7 @@ export default function Index() {
             </div>
             <div className="flex items-center space-x-4">
               <Link to="/login">
-                <Button variant="outline">เข้า��ู่ระบบ</Button>
+                <Button variant="outline">เข้าสู่ระบบ</Button>
               </Link>
               <Link to="/register">
                 <Button>สมัครสมาชิก</Button>
