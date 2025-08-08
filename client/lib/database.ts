@@ -46,33 +46,36 @@ export const userService = {
     return true
   },
 
-  // Create new user
+  // Create new user using database function
   async createUser(userData: Omit<User, 'id' | 'created_at' | 'updated_at'>, authUserId?: string): Promise<User | null> {
     console.log('Creating user with data:', userData, 'Auth User ID:', authUserId)
 
-    const userRecord = {
-      ...userData,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }
-
-    // If we have an auth user ID, use it as the user ID
-    if (authUserId) {
-      (userRecord as any).id = authUserId
-    }
-
-    const { data, error } = await supabase
-      .from('users')
-      .insert([userRecord])
-      .select()
-      .single()
-
-    if (error) {
-      console.error('Error creating user - Full error:', JSON.stringify(error, null, 2))
-      console.error('Error details:', error.message, error.details, error.hint)
+    if (!authUserId) {
+      console.error('Auth User ID is required for user creation')
       return null
     }
-    return data
+
+    try {
+      // Use the database function that bypasses RLS
+      const { data, error } = await supabase.rpc('create_user_profile', {
+        user_id: authUserId,
+        user_email: userData.email,
+        user_full_name: userData.full_name,
+        user_phone: userData.phone || null
+      })
+
+      if (error) {
+        console.error('Error creating user via function - Full error:', JSON.stringify(error, null, 2))
+        console.error('Error details:', error.message, error.details, error.hint)
+        return null
+      }
+
+      console.log('User created successfully via function:', data)
+      return data
+    } catch (err) {
+      console.error('Exception during user creation:', err)
+      return null
+    }
   }
 }
 
