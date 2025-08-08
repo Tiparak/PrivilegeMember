@@ -217,7 +217,7 @@ export const milestoneService = {
   // Get all active milestones
   async getActiveMilestones(): Promise<Milestone[]> {
     const { data, error } = await supabase
-      .from('privilege.milestones')
+      .from('milestones')
       .select('*')
       .eq('is_active', true)
       .order('points_required', { ascending: true })
