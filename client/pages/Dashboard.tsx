@@ -91,7 +91,7 @@ export default function Dashboard() {
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">เป้าหมายถ���ดไป</CardTitle>
+                <CardTitle className="text-lg">เป้าหมายถัดไป</CardTitle>
                 <Target className="w-6 h-6 text-primary" />
               </div>
             </CardHeader>
