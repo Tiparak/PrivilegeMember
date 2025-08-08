@@ -283,17 +283,9 @@ export const authService = {
 
         if (!newUser) {
           console.error('Failed to create user profile')
-          // Still return success for auth, but log the issue
+          throw new Error('Failed to create user profile')
         } else {
-          console.log('User profile created successfully:', newUser)
-
-          // Add welcome bonus transaction
-          await pointsService.addTransaction({
-            user_id: newUser.id,
-            points: 1000,
-            transaction_type: 'bonus',
-            description: 'โบนัสสมาชิกใหม่'
-          })
+          console.log('User profile created successfully with welcome bonus:', newUser)
         }
       }
 
