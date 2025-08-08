@@ -37,6 +37,45 @@ export default function Register() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
+  // Handle OAuth callback
+  useEffect(() => {
+    const handleAuthStateChange = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user && window.location.pathname === '/register') {
+        console.log('OAuth user detected on register page:', user);
+
+        // Handle the OAuth callback
+        const result = await authService.handleOAuthCallback(user);
+        if (result.success) {
+          setSuccess(true);
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 1500);
+        } else {
+          setError("เกิดข้อผิดพลาดในการสร้างโปรไฟล์ กรุณาลองใหม่อีกครั��ง");
+        }
+      }
+    };
+
+    handleAuthStateChange();
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session?.user && window.location.pathname === '/register') {
+        console.log('OAuth sign in detected:', session.user);
+        const result = await authService.handleOAuthCallback(session.user);
+        if (result.success) {
+          setSuccess(true);
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 1500);
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -55,7 +94,7 @@ export default function Register() {
       return "กรุณากรอกอีเมล";
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      return "รูปแบบอีเมลไม่ถูกต้อง";
+      return "รูปแบบอีเมล���ม่ถูกต้อง";
     }
     if (!formData.phone.trim()) {
       return "กรุณากรอกเบอร์โทรศัพท์";
@@ -70,7 +109,7 @@ export default function Register() {
       return "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร";
     }
     if (formData.password !== formData.confirmPassword) {
-      return "รหัสผ่านไม��ตรงกัน";
+      return "รหัสผ่านไม่ตรงกัน";
     }
     return "";
   };
@@ -119,7 +158,7 @@ export default function Register() {
 
       // Handle specific error types
       if (err.message.includes("already registered") || err.message.includes("already been registered")) {
-        setError("อีเม���นี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น");
+        setError("อีเมลนี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น");
       } else if (err.message.includes("invalid") || err.message.includes("format")) {
         setError("ข้อมูลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง");
       } else if (err.message.includes("password")) {
@@ -211,7 +250,7 @@ export default function Register() {
                   id="fullName"
                   name="fullName"
                   type="text"
-                  placeholder="กรอกชื่อ-นามสกุลของคุณ"
+                  placeholder="กรอกชื่อ-นาม���กุลของคุณ"
                   value={formData.fullName}
                   onChange={handleInputChange}
                   className="h-12"
