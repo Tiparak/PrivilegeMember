@@ -59,7 +59,9 @@ export default function Dashboard() {
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-muted-foreground">สวัสดี, สมชาย ใจดี</span>
+              <span className="text-sm text-muted-foreground">
+                <p>สวัสดี, Premium User1</p>
+              </span>
               <Button variant="outline" size="sm">ออกจากระบบ</Button>
             </div>
           </div>
@@ -170,7 +172,7 @@ export default function Dashboard() {
                       <div>
                         {milestone.achieved ? (
                           <Badge variant="secondary" className="bg-success/10 text-success border-success/20">
-                            สำเร็จแล้ว
+                            ส��เร็จแล้ว
                           </Badge>
                         ) : userPoints >= milestone.points * 0.8 ? (
                           <Badge variant="secondary" className="bg-warning/10 text-warning border-warning/20">
