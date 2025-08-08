@@ -123,11 +123,11 @@ export const rewardsService = {
   // Get all active rewards
   async getActiveRewards(): Promise<Reward[]> {
     const { data, error } = await supabase
-      .from('rewards')
+      .from('privilege.rewards')
       .select('*')
       .eq('is_active', true)
       .order('points_required', { ascending: true })
-    
+
     if (error) {
       console.error('Error fetching rewards:', error)
       return []
@@ -138,11 +138,11 @@ export const rewardsService = {
   // Get reward by ID
   async getReward(rewardId: string): Promise<Reward | null> {
     const { data, error } = await supabase
-      .from('rewards')
+      .from('privilege.rewards')
       .select('*')
       .eq('id', rewardId)
       .single()
-    
+
     if (error) {
       console.error('Error fetching reward:', error)
       return null
