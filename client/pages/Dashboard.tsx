@@ -80,7 +80,7 @@ export default function Dashboard() {
           <Card className="bg-gradient-to-br from-primary to-purple-600 text-white">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">คะแนนสะสมทั้งหมด</CardTitle>
+                <CardTitle className="text-lg">คะแนนสะ���มทั้งหมด</CardTitle>
                 <Star className="w-6 h-6" />
               </div>
             </CardHeader>
@@ -109,7 +109,7 @@ export default function Dashboard() {
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">ระดับสมาชิก</CardTitle>
+                <CardTitle className="text-lg">ร���ดับสมาชิก</CardTitle>
                 <Trophy className="w-6 h-6 text-gold" />
               </div>
             </CardHeader>
@@ -130,7 +130,9 @@ export default function Dashboard() {
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="milestones">Milestones</TabsTrigger>
             <TabsTrigger value="rewards">รางวัล</TabsTrigger>
-            <TabsTrigger value="history">ประว���ติ</TabsTrigger>
+            <TabsTrigger value="history">
+              <p>ประวัติ</p>
+            </TabsTrigger>
             <TabsTrigger value="profile">โปรไฟล์</TabsTrigger>
           </TabsList>
 
