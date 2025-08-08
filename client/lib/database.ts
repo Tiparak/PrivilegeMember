@@ -51,7 +51,7 @@ export const userService = {
     console.log('Creating user with data:', userData)
 
     const { data, error } = await supabase
-      .from('privilege.users')
+      .from('users')
       .insert([{
         ...userData,
         created_at: new Date().toISOString(),
