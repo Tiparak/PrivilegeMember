@@ -20,11 +20,11 @@ export const userService = {
   // Get user by email or phone
   async getUserByEmailOrPhone(emailOrPhone: string): Promise<User | null> {
     const { data, error } = await supabase
-      .from('users')
+      .from('privilege.users')
       .select('*')
       .or(`email.eq.${emailOrPhone},phone.eq.${emailOrPhone}`)
       .single()
-    
+
     if (error) {
       console.error('Error fetching user:', error)
       return null
@@ -35,10 +35,10 @@ export const userService = {
   // Update user points
   async updateUserPoints(userId: string, newPoints: number): Promise<boolean> {
     const { error } = await supabase
-      .from('users')
+      .from('privilege.users')
       .update({ points: newPoints, updated_at: new Date().toISOString() })
       .eq('id', userId)
-    
+
     if (error) {
       console.error('Error updating user points:', error)
       return false
@@ -49,7 +49,7 @@ export const userService = {
   // Create new user
   async createUser(userData: Omit<User, 'id' | 'created_at' | 'updated_at'>): Promise<User | null> {
     const { data, error } = await supabase
-      .from('users')
+      .from('privilege.users')
       .insert([{
         ...userData,
         created_at: new Date().toISOString(),
@@ -57,7 +57,7 @@ export const userService = {
       }])
       .select()
       .single()
-    
+
     if (error) {
       console.error('Error creating user:', error)
       return null
