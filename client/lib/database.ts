@@ -243,31 +243,55 @@ export const milestoneService = {
 export const authService = {
   // Sign up with email
   async signUp(email: string, password: string, userData: { full_name: string, phone?: string }) {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: userData
-      }
-    })
-    
-    if (error) {
-      console.error('Error signing up:', error)
-      return { user: null, error }
-    }
-    
-    // Create user record in users table
-    if (data.user) {
-      const newUser = await userService.createUser({
-        email: data.user.email!,
-        full_name: userData.full_name,
-        phone: userData.phone,
-        points: 0,
-        member_level: 'bronze'
+    try {
+      console.log('Starting signup process for:', email)
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: userData
+        }
       })
+
+      if (error) {
+        console.error('Auth signup error:', error)
+        return { user: null, error }
+      }
+
+      // Create user record in users table
+      if (data.user) {
+        console.log('Auth user created, now creating user profile')
+
+        const newUser = await userService.createUser({
+          email: data.user.email!,
+          full_name: userData.full_name,
+          phone: userData.phone,
+          points: 1000, // Welcome bonus
+          member_level: 'bronze'
+        })
+
+        if (!newUser) {
+          console.error('Failed to create user profile')
+          // Still return success for auth, but log the issue
+        } else {
+          console.log('User profile created successfully:', newUser)
+
+          // Add welcome bonus transaction
+          await pointsService.addTransaction({
+            user_id: newUser.id,
+            points: 1000,
+            transaction_type: 'bonus',
+            description: 'โบนัสสมาชิกใหม่'
+          })
+        }
+      }
+
+      return { user: data.user, error: null }
+    } catch (err) {
+      console.error('Signup process error:', err)
+      return { user: null, error: err as any }
     }
-    
-    return { user: data.user, error: null }
   },
 
   // Sign in with email
