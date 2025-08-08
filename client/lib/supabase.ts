@@ -3,12 +3,35 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://bitglhtesgqflxojoamq.supabase.co'
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
 
+// Development mode detection
+const isDevelopment = import.meta.env.DEV
+
 // Validate required environment variables
 if (!supabaseKey) {
-  console.error('❌ Missing VITE_SUPABASE_ANON_KEY environment variable')
-  console.error('Please set the Supabase anon key in your environment variables')
-  console.error('You can find this key in your Supabase dashboard under Settings > API')
-  throw new Error('Supabase configuration error: Missing anon key')
+  const errorMessage = `
+❌ Missing VITE_SUPABASE_ANON_KEY environment variable
+
+To fix this:
+1. Go to your Supabase dashboard: https://supabase.com/dashboard/project/bitglhtesgqflxojoamq
+2. Navigate to Settings > API
+3. Copy the "anon public" key
+4. Set it as VITE_SUPABASE_ANON_KEY environment variable
+
+Current environment:
+- VITE_SUPABASE_URL: ${supabaseUrl}
+- VITE_SUPABASE_ANON_KEY: ${supabaseKey ? 'SET' : 'MISSING'}
+- Development mode: ${isDevelopment}
+  `
+
+  console.error(errorMessage)
+
+  if (!isDevelopment) {
+    // In production, throw error
+    throw new Error('Supabase configuration error: Missing anon key')
+  } else {
+    // In development, warn but continue with a placeholder
+    console.warn('���️ Using placeholder Supabase key for development. Features may not work correctly.')
+  }
 }
 
 if (!supabaseUrl) {
