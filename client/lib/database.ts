@@ -156,14 +156,14 @@ export const redemptionService = {
   // Create redemption request
   async createRedemption(redemption: Omit<RedemptionHistory, 'id' | 'created_at'>): Promise<RedemptionHistory | null> {
     const { data, error } = await supabase
-      .from('redemption_history')
+      .from('privilege.redemption_history')
       .insert([{
         ...redemption,
         created_at: new Date().toISOString()
       }])
       .select()
       .single()
-    
+
     if (error) {
       console.error('Error creating redemption:', error)
       return null
@@ -174,14 +174,14 @@ export const redemptionService = {
   // Get user's redemption history
   async getUserRedemptions(userId: string): Promise<RedemptionHistory[]> {
     const { data, error } = await supabase
-      .from('redemption_history')
+      .from('privilege.redemption_history')
       .select(`
         *,
-        rewards (name, description, category)
+        privilege.rewards (name, description, category)
       `)
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
-    
+
     if (error) {
       console.error('Error fetching redemptions:', error)
       return []
@@ -197,10 +197,10 @@ export const redemptionService = {
     }
 
     const { error } = await supabase
-      .from('redemption_history')
+      .from('privilege.redemption_history')
       .update(updateData)
       .eq('id', redemptionId)
-    
+
     if (error) {
       console.error('Error updating redemption status:', error)
       return false
