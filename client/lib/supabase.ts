@@ -30,7 +30,7 @@ Current environment:
     throw new Error('Supabase configuration error: Missing anon key')
   } else {
     // In development, warn but continue with a placeholder
-    console.warn('���️ Using placeholder Supabase key for development. Features may not work correctly.')
+    console.warn('⚠️ Using placeholder Supabase key for development. Features may not work correctly.')
   }
 }
 
@@ -40,13 +40,25 @@ if (!supabaseUrl) {
 }
 
 // Create Supabase client with validated configuration
-export const supabase = createClient(supabaseUrl, supabaseKey, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true
+export const supabase = createClient(
+  supabaseUrl,
+  supabaseKey || 'placeholder-key-for-development',
+  {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true
+    }
   }
-})
+)
+
+// Export configuration status for debugging
+export const supabaseConfig = {
+  url: supabaseUrl,
+  hasKey: !!supabaseKey,
+  isDevelopment,
+  isConfigured: !!(supabaseUrl && supabaseKey)
+}
 
 // Database types for TypeScript
 export interface User {
