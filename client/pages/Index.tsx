@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Star, 
-  Gift, 
-  TrendingUp, 
-  Users, 
-  Smartphone, 
-  Shield, 
+import { SupabaseStatus } from "@/components/SupabaseStatus";
+import {
+  Star,
+  Gift,
+  TrendingUp,
+  Users,
+  Smartphone,
+  Shield,
   Award,
   CreditCard,
   BarChart3,
@@ -34,7 +35,7 @@ export default function Index() {
             </div>
             <div className="flex items-center space-x-4">
               <Link to="/login">
-                <Button variant="outline">เข้าสู่ระบบ</Button>
+                <Button variant="outline">เข้า��ู่ระบบ</Button>
               </Link>
               <Link to="/register">
                 <Button>สมัครสมาชิก</Button>
@@ -138,7 +139,7 @@ export default function Index() {
                 </div>
                 <CardTitle>Milestone Rewards</CardTitle>
                 <CardDescription>
-                  ตั้งค่าระดับคะแนนและรางวัลพิเศษ พร้อมแจ้งเตือนอัตโนมัติ
+                  ตั้ง��่าระดับคะแนนและรางวัลพิเศษ พร้อมแจ้งเตือนอัตโนมัติ
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -151,7 +152,7 @@ export default function Index() {
                 </div>
                 <CardTitle>ระบบแลกรางวัล</CardTitle>
                 <CardDescription>
-                  แลกคะแนนเป็นส่วนลด สินค้า หรือสิทธิพิเศษได้ง่ายๆ
+                  แลกคะแนนเป็นส���วนลด สินค้า หรือสิทธิพิเศษได้ง่ายๆ
                 </CardDescription>
               </CardHeader>
             </Card>
