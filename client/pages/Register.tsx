@@ -33,6 +33,7 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
@@ -69,7 +70,7 @@ export default function Register() {
       return "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร";
     }
     if (formData.password !== formData.confirmPassword) {
-      return "รหัสผ่านไม่ตรงกัน";
+      return "รหัสผ่านไม��ตรงกัน";
     }
     return "";
   };
@@ -118,7 +119,7 @@ export default function Register() {
 
       // Handle specific error types
       if (err.message.includes("already registered") || err.message.includes("already been registered")) {
-        setError("อีเมลนี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น");
+        setError("อีเม���นี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น");
       } else if (err.message.includes("invalid") || err.message.includes("format")) {
         setError("ข้อมูลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง");
       } else if (err.message.includes("password")) {
