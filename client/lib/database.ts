@@ -268,7 +268,7 @@ export const authService = {
 
       // Create user record in users table
       if (data.user) {
-        console.log('Auth user created, now creating user profile')
+        console.log('Auth user created, now creating user profile for user ID:', data.user.id)
 
         const newUser = await userService.createUser({
           email: data.user.email!,
@@ -276,7 +276,7 @@ export const authService = {
           phone: userData.phone,
           points: 1000, // Welcome bonus
           member_level: 'bronze'
-        })
+        }, data.user.id) // Pass the auth user ID
 
         if (!newUser) {
           console.error('Failed to create user profile')
