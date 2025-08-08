@@ -48,6 +48,8 @@ export const userService = {
 
   // Create new user
   async createUser(userData: Omit<User, 'id' | 'created_at' | 'updated_at'>): Promise<User | null> {
+    console.log('Creating user with data:', userData)
+
     const { data, error } = await supabase
       .from('privilege.users')
       .insert([{
@@ -59,7 +61,8 @@ export const userService = {
       .single()
 
     if (error) {
-      console.error('Error creating user:', error)
+      console.error('Error creating user - Full error:', JSON.stringify(error, null, 2))
+      console.error('Error details:', error.message, error.details, error.hint)
       return null
     }
     return data
