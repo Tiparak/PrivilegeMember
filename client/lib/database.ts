@@ -5,7 +5,7 @@ export const userService = {
   // Get user by ID
   async getUser(userId: string): Promise<User | null> {
     const { data, error } = await supabase
-      .from('privilege.users')
+      .from('users')
       .select('*')
       .eq('id', userId)
       .single()
@@ -20,7 +20,7 @@ export const userService = {
   // Get user by email or phone
   async getUserByEmailOrPhone(emailOrPhone: string): Promise<User | null> {
     const { data, error } = await supabase
-      .from('privilege.users')
+      .from('users')
       .select('*')
       .or(`email.eq.${emailOrPhone},phone.eq.${emailOrPhone}`)
       .single()
@@ -35,7 +35,7 @@ export const userService = {
   // Update user points
   async updateUserPoints(userId: string, newPoints: number): Promise<boolean> {
     const { error } = await supabase
-      .from('privilege.users')
+      .from('users')
       .update({ points: newPoints, updated_at: new Date().toISOString() })
       .eq('id', userId)
 
