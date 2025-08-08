@@ -85,6 +85,8 @@ export default function Register() {
     setError("");
 
     try {
+      console.log('Starting registration process...');
+
       const { user, error: authError } = await authService.signUp(
         formData.email,
         formData.password,
@@ -95,24 +97,34 @@ export default function Register() {
       );
 
       if (authError) {
+        console.error('Auth error:', authError);
         throw new Error(authError.message);
       }
 
       if (user) {
+        console.log('Registration successful for user:', user.id);
         setSuccess(true);
-        // Give bonus points for new member
+        // Navigate to dashboard after success
         setTimeout(() => {
           navigate("/dashboard");
         }, 2000);
+      } else {
+        throw new Error('Registration failed - no user returned');
       }
     } catch (err: any) {
       console.error("Registration error:", err);
-      if (err.message.includes("already registered")) {
+
+      // Handle specific error types
+      if (err.message.includes("already registered") || err.message.includes("already been registered")) {
         setError("อีเมลนี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น");
-      } else if (err.message.includes("invalid")) {
+      } else if (err.message.includes("invalid") || err.message.includes("format")) {
         setError("ข้อมูลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง");
+      } else if (err.message.includes("password")) {
+        setError("รหัสผ่านไม่ถูกต้องตามข้อกำหนด");
+      } else if (err.message.includes("email")) {
+        setError("รูปแบบอีเมลไม่ถูกต้อง");
       } else {
-        setError("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
+        setError("เกิดข้อผิดพลาดในการสมัครสมาชิก กรุณาลองใหม่อีกครั้ง");
       }
     } finally {
       setLoading(false);
@@ -129,7 +141,7 @@ export default function Register() {
             </div>
             <CardTitle className="text-2xl text-success">สมัครสมาชิกสำเร็จ!</CardTitle>
             <CardDescription>
-              ยินดีต้อนรับเข้าสู่ Privilege Member<br />
+              ยินดีต��อนรับเข้าสู่ Privilege Member<br />
               กำลังพาคุณไปยังหน้าแดชบอร์ด...
             </CardDescription>
           </CardHeader>
@@ -313,7 +325,7 @@ export default function Register() {
               {/* Login Link */}
               <div className="text-center">
                 <p className="text-sm text-muted-foreground">
-                  มีบัญชีอยู่แ��้ว?{" "}
+                  มีบัญชีอยู่แล้ว?{" "}
                   <Link to="/login" className="text-primary hover:underline font-medium">
                     เข้าสู่ระบบ
                   </Link>
