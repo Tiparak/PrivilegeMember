@@ -5,11 +5,11 @@ export const userService = {
   // Get user by ID
   async getUser(userId: string): Promise<User | null> {
     const { data, error } = await supabase
-      .from('users')
+      .from('privilege.users')
       .select('*')
       .eq('id', userId)
       .single()
-    
+
     if (error) {
       console.error('Error fetching user:', error)
       return null
