@@ -47,16 +47,23 @@ export const userService = {
   },
 
   // Create new user
-  async createUser(userData: Omit<User, 'id' | 'created_at' | 'updated_at'>): Promise<User | null> {
-    console.log('Creating user with data:', userData)
+  async createUser(userData: Omit<User, 'id' | 'created_at' | 'updated_at'>, authUserId?: string): Promise<User | null> {
+    console.log('Creating user with data:', userData, 'Auth User ID:', authUserId)
+
+    const userRecord = {
+      ...userData,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    }
+
+    // If we have an auth user ID, use it as the user ID
+    if (authUserId) {
+      (userRecord as any).id = authUserId
+    }
 
     const { data, error } = await supabase
       .from('users')
-      .insert([{
-        ...userData,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      }])
+      .insert([userRecord])
       .select()
       .single()
 
