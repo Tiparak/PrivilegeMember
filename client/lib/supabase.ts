@@ -3,11 +3,27 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://bitglhtesgqflxojoamq.supabase.co'
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
 
+// Validate required environment variables
 if (!supabaseKey) {
-  console.warn('Missing VITE_SUPABASE_ANON_KEY environment variable')
+  console.error('❌ Missing VITE_SUPABASE_ANON_KEY environment variable')
+  console.error('Please set the Supabase anon key in your environment variables')
+  console.error('You can find this key in your Supabase dashboard under Settings > API')
+  throw new Error('Supabase configuration error: Missing anon key')
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+if (!supabaseUrl) {
+  console.error('❌ Missing VITE_SUPABASE_URL environment variable')
+  throw new Error('Supabase configuration error: Missing URL')
+}
+
+// Create Supabase client with validated configuration
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true
+  }
+})
 
 // Database types for TypeScript
 export interface User {
