@@ -159,7 +159,7 @@ export const redemptionService = {
   // Create redemption request
   async createRedemption(redemption: Omit<RedemptionHistory, 'id' | 'created_at'>): Promise<RedemptionHistory | null> {
     const { data, error } = await supabase
-      .from('privilege.redemption_history')
+      .from('redemption_history')
       .insert([{
         ...redemption,
         created_at: new Date().toISOString()
@@ -177,10 +177,10 @@ export const redemptionService = {
   // Get user's redemption history
   async getUserRedemptions(userId: string): Promise<RedemptionHistory[]> {
     const { data, error } = await supabase
-      .from('privilege.redemption_history')
+      .from('redemption_history')
       .select(`
         *,
-        privilege.rewards (name, description, category)
+        rewards (name, description, category)
       `)
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
@@ -200,7 +200,7 @@ export const redemptionService = {
     }
 
     const { error } = await supabase
-      .from('privilege.redemption_history')
+      .from('redemption_history')
       .update(updateData)
       .eq('id', redemptionId)
 
