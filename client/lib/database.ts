@@ -126,7 +126,7 @@ export const rewardsService = {
   // Get all active rewards
   async getActiveRewards(): Promise<Reward[]> {
     const { data, error } = await supabase
-      .from('privilege.rewards')
+      .from('rewards')
       .select('*')
       .eq('is_active', true)
       .order('points_required', { ascending: true })
@@ -141,7 +141,7 @@ export const rewardsService = {
   // Get reward by ID
   async getReward(rewardId: string): Promise<Reward | null> {
     const { data, error } = await supabase
-      .from('privilege.rewards')
+      .from('rewards')
       .select('*')
       .eq('id', rewardId)
       .single()
