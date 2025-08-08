@@ -38,7 +38,7 @@ export default function Dashboard() {
   ];
 
   const availableRewards = [
-    { id: 1, name: "คูปองส่วนลด 10%", points: 500, description: "��ช้ได้กับสินค้าทุกประเภท", category: "discount" },
+    { id: 1, name: "คูปองส่วนลด 10%", points: 500, description: "ใช้ได้กับสินค้าทุกประเภท", category: "discount" },
     { id: 2, name: "กระเป๋าผ้า Premium", points: 1200, description: "ของพรีเมียมคุณภาพสูง", category: "product" },
     { id: 3, name: "ส่วนลด 20%", points: 2000, description: "ส่วนลดพิเศษสำหรับสมาชิก", category: "discount" },
     { id: 4, name: "บัตรกำนัล 1,000 บาท", points: 5000, description: "บัตรกำนัลช้อปปิ้ง", category: "voucher" },
@@ -130,7 +130,7 @@ export default function Dashboard() {
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="milestones">Milestones</TabsTrigger>
             <TabsTrigger value="rewards">รางวัล</TabsTrigger>
-            <TabsTrigger value="history">ประวัติ</TabsTrigger>
+            <TabsTrigger value="history">ประว���ติ</TabsTrigger>
             <TabsTrigger value="profile">โปรไฟล์</TabsTrigger>
           </TabsList>
 
@@ -227,7 +227,7 @@ export default function Dashboard() {
                             disabled={userPoints < reward.points}
                             className="px-4"
                           >
-                            {userPoints >= reward.points ? 'แลกเลย' : 'คะแนนไม่พอ'}
+                            {userPoints >= reward.points ? 'แลกเ��ย' : 'คะแนนไม่พอ'}
                             <ArrowRight className="w-4 h-4 ml-1" />
                           </Button>
                         </div>
