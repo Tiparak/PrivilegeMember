@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SupabaseStatus } from "@/components/SupabaseStatus";
 import {
@@ -15,7 +21,7 @@ import {
   BarChart3,
   ArrowRight,
   Crown,
-  Sparkles
+  Sparkles,
 } from "lucide-react";
 
 export default function Index() {
@@ -78,7 +84,7 @@ export default function Index() {
               </Button>
             </Link>
           </div>
-          
+
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <Card className="text-center bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
@@ -86,7 +92,9 @@ export default function Index() {
                 <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <Users className="w-6 h-6 text-white" />
                 </div>
-                <div className="text-3xl font-bold text-blue-700 mb-2">50,000+</div>
+                <div className="text-3xl font-bold text-blue-700 mb-2">
+                  50,000+
+                </div>
                 <div className="text-blue-600">สมาชิกที่ใช้งาน</div>
               </CardContent>
             </Card>
@@ -104,7 +112,9 @@ export default function Index() {
                 <div className="w-12 h-12 bg-amber-500 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <Gift className="w-6 h-6 text-white" />
                 </div>
-                <div className="text-3xl font-bold text-amber-700 mb-2">5,000+</div>
+                <div className="text-3xl font-bold text-amber-700 mb-2">
+                  5,000+
+                </div>
                 <div className="text-amber-600">รางวัลให้เลือก</div>
               </CardContent>
             </Card>
@@ -215,13 +225,21 @@ export default function Index() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/register">
-              <Button size="lg" variant="secondary" className="px-8 py-3 text-lg">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="px-8 py-3 text-lg"
+              >
                 สมัครสมาชิกฟรี
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             <Link to="/contact">
-              <Button size="lg" variant="outline" className="px-8 py-3 text-lg border-white text-white hover:bg-white hover:text-primary">
+              <Button
+                size="lg"
+                variant="outline"
+                className="px-8 py-3 text-lg border-white text-white hover:bg-white hover:text-primary"
+              >
                 ติดต่อขอข้อมูลเพิ่มเติม
               </Button>
             </Link>
@@ -247,19 +265,51 @@ export default function Index() {
             <div>
               <h3 className="font-semibold mb-4">ลิงก์ด่วน</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><Link to="/about" className="hover:text-white">เกี่ยวกับเรา</Link></li>
-                <li><Link to="/features" className="hover:text-white">ฟีเจอร์</Link></li>
-                <li><Link to="/pricing" className="hover:text-white">แผนและราคา</Link></li>
-                <li><Link to="/contact" className="hover:text-white">ติดต่อเรา</Link></li>
+                <li>
+                  <Link to="/about" className="hover:text-white">
+                    เกี่ยวกับเรา
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/features" className="hover:text-white">
+                    ฟีเจอร์
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/pricing" className="hover:text-white">
+                    แผนและราคา
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className="hover:text-white">
+                    ติดต่อเรา
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">สำหรับสมาชิก</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><Link to="/login" className="hover:text-white">เข้าสู่ระบบ</Link></li>
-                <li><Link to="/register" className="hover:text-white">สมัครสมาชิก</Link></li>
-                <li><Link to="/dashboard" className="hover:text-white">แดชบอร์ด</Link></li>
-                <li><Link to="/help" className="hover:text-white">ศูนย์ช่วยเหลือ</Link></li>
+                <li>
+                  <Link to="/login" className="hover:text-white">
+                    เข้าสู่ระบบ
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/register" className="hover:text-white">
+                    สมัครสมาชิก
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/dashboard" className="hover:text-white">
+                    แดชบอร์ด
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/help" className="hover:text-white">
+                    ศูนย์ช่วยเหลือ
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>

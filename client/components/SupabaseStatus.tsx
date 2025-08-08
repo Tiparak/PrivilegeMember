@@ -1,44 +1,52 @@
-import { useEffect, useState } from 'react';
-import { supabase, supabaseConfig } from '@/lib/supabase';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { supabase, supabaseConfig } from "@/lib/supabase";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
 
 export function SupabaseStatus() {
-  const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'error'>('checking');
-  const [error, setError] = useState<string>('');
+  const [connectionStatus, setConnectionStatus] = useState<
+    "checking" | "connected" | "error"
+  >("checking");
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const checkConnection = async () => {
       try {
         // Try to get the current session
         const { data, error } = await supabase.auth.getSession();
-        
+
         if (error) {
-          setConnectionStatus('error');
+          setConnectionStatus("error");
           setError(error.message);
         } else {
-          setConnectionStatus('connected');
+          setConnectionStatus("connected");
         }
       } catch (err: any) {
-        setConnectionStatus('error');
-        setError(err.message || 'Unknown connection error');
+        setConnectionStatus("error");
+        setError(err.message || "Unknown connection error");
       }
     };
 
     if (supabaseConfig.isConfigured) {
       checkConnection();
     } else {
-      setConnectionStatus('error');
-      setError('Supabase not properly configured');
+      setConnectionStatus("error");
+      setError("Supabase not properly configured");
     }
   }, []);
 
   const getStatusIcon = () => {
     switch (connectionStatus) {
-      case 'connected':
+      case "connected":
         return <CheckCircle className="w-5 h-5 text-green-500" />;
-      case 'error':
+      case "error":
         return <XCircle className="w-5 h-5 text-red-500" />;
       default:
         return <AlertCircle className="w-5 h-5 text-yellow-500" />;
@@ -47,9 +55,13 @@ export function SupabaseStatus() {
 
   const getStatusBadge = () => {
     switch (connectionStatus) {
-      case 'connected':
-        return <Badge variant="default" className="bg-green-500">Connected</Badge>;
-      case 'error':
+      case "connected":
+        return (
+          <Badge variant="default" className="bg-green-500">
+            Connected
+          </Badge>
+        );
+      case "error":
         return <Badge variant="destructive">Error</Badge>;
       default:
         return <Badge variant="secondary">Checking...</Badge>;
@@ -83,14 +95,22 @@ export function SupabaseStatus() {
           </div>
           <div className="flex justify-between">
             <span>Has API Key:</span>
-            <span className={supabaseConfig.hasKey ? 'text-green-600' : 'text-red-600'}>
-              {supabaseConfig.hasKey ? 'Yes' : 'No'}
+            <span
+              className={
+                supabaseConfig.hasKey ? "text-green-600" : "text-red-600"
+              }
+            >
+              {supabaseConfig.hasKey ? "Yes" : "No"}
             </span>
           </div>
           <div className="flex justify-between">
             <span>Configured:</span>
-            <span className={supabaseConfig.isConfigured ? 'text-green-600' : 'text-red-600'}>
-              {supabaseConfig.isConfigured ? 'Yes' : 'No'}
+            <span
+              className={
+                supabaseConfig.isConfigured ? "text-green-600" : "text-red-600"
+              }
+            >
+              {supabaseConfig.isConfigured ? "Yes" : "No"}
             </span>
           </div>
           {error && (
@@ -100,7 +120,8 @@ export function SupabaseStatus() {
           )}
           {!supabaseConfig.isConfigured && (
             <div className="mt-3 p-2 bg-blue-100 border border-blue-300 rounded text-blue-700">
-              <strong>Setup Required:</strong> Please configure your Supabase environment variables.
+              <strong>Setup Required:</strong> Please configure your Supabase
+              environment variables.
             </div>
           )}
         </div>
