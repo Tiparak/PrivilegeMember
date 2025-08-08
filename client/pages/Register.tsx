@@ -52,7 +52,7 @@ export default function Register() {
             navigate("/dashboard");
           }, 1500);
         } else {
-          setError("เกิดข้อผิดพลาดในการสร้างโปรไฟล์ กรุณาลองใหม่อีกครั��ง");
+          setError("เกิดข้อผิดพลาดในการสร้างโปรไฟล์ กรุณาลองใหม่อีกครั้ง");
         }
       }
     };
@@ -94,7 +94,7 @@ export default function Register() {
       return "กรุณากรอกอีเมล";
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      return "รูปแบบอีเมล���ม่ถูกต้อง";
+      return "รูปแบบอีเมลไม่ถูกต้อง";
     }
     if (!formData.phone.trim()) {
       return "กรุณากรอกเบอร์โทรศัพท์";
@@ -103,7 +103,7 @@ export default function Register() {
       return "รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง";
     }
     if (!formData.password) {
-      return "กรุณากรอกรหัสผ่าน";
+      return "กรุณากรอกร��ัสผ่าน";
     }
     if (formData.password.length < 6) {
       return "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร";
@@ -173,6 +173,27 @@ export default function Register() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    setError("");
+
+    try {
+      console.log('Starting Google sign in...');
+      const { user, error: googleError } = await authService.signInWithGoogle();
+
+      if (googleError) {
+        throw new Error(googleError.message);
+      }
+
+      // OAuth redirect will handle the rest
+      console.log('Google OAuth initiated');
+    } catch (err: any) {
+      console.error("Google sign-in error:", err);
+      setError("เกิดข้อผิดพลาดในการเข้าสู่ระบบด้วย Google กรุณาลองใหม่อีกครั้ง");
+      setGoogleLoading(false);
+    }
+  };
+
   if (success) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-50 flex items-center justify-center">
@@ -184,7 +205,7 @@ export default function Register() {
             <CardTitle className="text-2xl text-success">สมัครสมาชิกสำเร็จ!</CardTitle>
             <CardDescription>
               ยินดีต้อนรับเข้าสู่ Privilege Member<br />
-              กำลังพาคุณไปยังหน้าแดชบอร์ด...
+              กำลังพาค��ณไปยังหน้าแดชบอร์ด...
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
@@ -250,7 +271,7 @@ export default function Register() {
                   id="fullName"
                   name="fullName"
                   type="text"
-                  placeholder="กรอกชื่อ-นาม���กุลของคุณ"
+                  placeholder="กรอกชื่อ-นามสกุลของคุณ"
                   value={formData.fullName}
                   onChange={handleInputChange}
                   className="h-12"
