@@ -164,9 +164,9 @@ export default function Register() {
       } else if (err.message.includes("password")) {
         setError("รหัสผ่านไม่ถูกต้องตามข้อกำหนด");
       } else if (err.message.includes("email")) {
-        setError("รูปแบบอีเมลไม่��ูกต้อง");
+        setError("รูปแบบอีเมลไม่ถูกต้อง");
       } else {
-        setError("เกิดข้อผิดพลาดในการสมัครสมาชิก กรุณาลองใหม่อีกครั้ง");
+        setError("เกิดข้อผิดพลาดในการสมัครสมาชิก กรุณ��ลองใหม่อีกครั้ง");
       }
     } finally {
       setLoading(false);
@@ -411,7 +411,7 @@ export default function Register() {
               <Button
                 type="submit"
                 className="w-full h-12 text-lg"
-                disabled={loading}
+                disabled={loading || googleLoading}
               >
                 {loading ? (
                   <>
@@ -419,7 +419,7 @@ export default function Register() {
                     กำลังสมัครสมาชิก...
                   </>
                 ) : (
-                  "สมัครสมาชิก"
+                  "สมัครสมาชิกด้วยอีเมล"
                 )}
               </Button>
 
