@@ -71,12 +71,12 @@ export const pointsService = {
   // Get user's transaction history
   async getUserTransactions(userId: string, limit = 20): Promise<PointTransaction[]> {
     const { data, error } = await supabase
-      .from('point_transactions')
+      .from('privilege.point_transactions')
       .select('*')
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
       .limit(limit)
-    
+
     if (error) {
       console.error('Error fetching transactions:', error)
       return []
@@ -87,14 +87,14 @@ export const pointsService = {
   // Add points transaction
   async addTransaction(transaction: Omit<PointTransaction, 'id' | 'created_at'>): Promise<PointTransaction | null> {
     const { data, error } = await supabase
-      .from('point_transactions')
+      .from('privilege.point_transactions')
       .insert([{
         ...transaction,
         created_at: new Date().toISOString()
       }])
       .select()
       .single()
-    
+
     if (error) {
       console.error('Error adding transaction:', error)
       return null
@@ -105,15 +105,15 @@ export const pointsService = {
   // Get user's total points from transactions
   async getUserTotalPoints(userId: string): Promise<number> {
     const { data, error } = await supabase
-      .from('point_transactions')
+      .from('privilege.point_transactions')
       .select('points')
       .eq('user_id', userId)
-    
+
     if (error) {
       console.error('Error calculating total points:', error)
       return 0
     }
-    
+
     return data?.reduce((total, transaction) => total + transaction.points, 0) || 0
   }
 }
