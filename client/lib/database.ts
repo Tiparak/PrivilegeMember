@@ -46,7 +46,7 @@ export const userService = {
     return true
   },
 
-  // Create new user using database function
+  // Create new user with direct insert
   async createUser(userData: Omit<User, 'id' | 'created_at' | 'updated_at'>, authUserId?: string): Promise<User | null> {
     console.log('Creating user with data:', userData, 'Auth User ID:', authUserId)
 
@@ -56,25 +56,56 @@ export const userService = {
     }
 
     try {
-      // Use the database function that bypasses RLS
-      const { data, error } = await supabase.rpc('create_user_profile', {
-        user_id: authUserId,
-        user_email: userData.email,
-        user_full_name: userData.full_name,
-        user_phone: userData.phone || null
-      })
+      // Create user record with specific ID
+      const userRecord = {
+        id: authUserId,
+        email: userData.email,
+        full_name: userData.full_name,
+        phone: userData.phone || null,
+        points: 1000, // Welcome bonus
+        member_level: 'bronze' as const,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+
+      console.log('Inserting user record:', userRecord)
+
+      const { data, error } = await supabase
+        .from('users')
+        .insert([userRecord])
+        .select()
+        .single()
 
       if (error) {
-        console.error('Error creating user via function - Full error:', JSON.stringify(error, null, 2))
+        console.error('Error creating user - Full error:', JSON.stringify(error, null, 2))
         console.error('Error details:', error.message, error.details, error.hint)
         return null
       }
 
-      console.log('User created successfully via function:', data)
+      console.log('User created successfully:', data)
+
+      // Add welcome bonus transaction
+      await this.addWelcomeBonus(authUserId)
+
       return data
     } catch (err) {
       console.error('Exception during user creation:', err)
       return null
+    }
+  },
+
+  // Helper method to add welcome bonus
+  async addWelcomeBonus(userId: string): Promise<void> {
+    try {
+      await pointsService.addTransaction({
+        user_id: userId,
+        points: 1000,
+        transaction_type: 'bonus',
+        description: 'โบนัสสมาชิกใหม่'
+      })
+      console.log('Welcome bonus added successfully')
+    } catch (err) {
+      console.error('Failed to add welcome bonus:', err)
     }
   }
 }
