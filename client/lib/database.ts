@@ -436,3 +436,252 @@ export const authService = {
     return user
   }
 }
+
+// Admin management functions
+export const adminService = {
+  // User Management
+  async getAllUsers(limit = 100, offset = 0): Promise<User[]> {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1)
+
+    if (error) {
+      console.error('Error fetching all users:', error)
+      return []
+    }
+    return data || []
+  },
+
+  async updateUser(userId: string, userData: Partial<User>): Promise<boolean> {
+    const { error } = await supabase
+      .from('users')
+      .update({ ...userData, updated_at: new Date().toISOString() })
+      .eq('id', userId)
+
+    if (error) {
+      console.error('Error updating user:', error)
+      return false
+    }
+    return true
+  },
+
+  async deleteUser(userId: string): Promise<boolean> {
+    const { error } = await supabase
+      .from('users')
+      .delete()
+      .eq('id', userId)
+
+    if (error) {
+      console.error('Error deleting user:', error)
+      return false
+    }
+    return true
+  },
+
+  // Rewards Management
+  async createReward(rewardData: Omit<Reward, 'id' | 'created_at'>): Promise<Reward | null> {
+    const { data, error } = await supabase
+      .from('rewards')
+      .insert([{
+        ...rewardData,
+        created_at: new Date().toISOString()
+      }])
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Error creating reward:', error)
+      return null
+    }
+    return data
+  },
+
+  async updateReward(rewardId: string, rewardData: Partial<Reward>): Promise<boolean> {
+    const { error } = await supabase
+      .from('rewards')
+      .update(rewardData)
+      .eq('id', rewardId)
+
+    if (error) {
+      console.error('Error updating reward:', error)
+      return false
+    }
+    return true
+  },
+
+  async deleteReward(rewardId: string): Promise<boolean> {
+    const { error } = await supabase
+      .from('rewards')
+      .delete()
+      .eq('id', rewardId)
+
+    if (error) {
+      console.error('Error deleting reward:', error)
+      return false
+    }
+    return true
+  },
+
+  // Milestones Management
+  async createMilestone(milestoneData: Omit<Milestone, 'id' | 'created_at'>): Promise<Milestone | null> {
+    const { data, error } = await supabase
+      .from('milestones')
+      .insert([{
+        ...milestoneData,
+        created_at: new Date().toISOString()
+      }])
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Error creating milestone:', error)
+      return null
+    }
+    return data
+  },
+
+  async updateMilestone(milestoneId: string, milestoneData: Partial<Milestone>): Promise<boolean> {
+    const { error } = await supabase
+      .from('milestones')
+      .update(milestoneData)
+      .eq('id', milestoneId)
+
+    if (error) {
+      console.error('Error updating milestone:', error)
+      return false
+    }
+    return true
+  },
+
+  async deleteMilestone(milestoneId: string): Promise<boolean> {
+    const { error } = await supabase
+      .from('milestones')
+      .delete()
+      .eq('id', milestoneId)
+
+    if (error) {
+      console.error('Error deleting milestone:', error)
+      return false
+    }
+    return true
+  },
+
+  // Points Transaction Management
+  async getAllTransactions(limit = 100, offset = 0): Promise<PointTransaction[]> {
+    const { data, error } = await supabase
+      .from('point_transactions')
+      .select(`
+        *,
+        users!inner(full_name, email)
+      `)
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1)
+
+    if (error) {
+      console.error('Error fetching all transactions:', error)
+      return []
+    }
+    return data || []
+  },
+
+  async addPointsToUser(userId: string, points: number, description: string): Promise<boolean> {
+    const transaction = await pointsService.addTransaction({
+      user_id: userId,
+      points: points,
+      transaction_type: points > 0 ? 'earn' : 'redeem',
+      description: description
+    })
+
+    return transaction !== null
+  },
+
+  // Redemption Management
+  async getAllRedemptions(limit = 100, offset = 0): Promise<RedemptionHistory[]> {
+    const { data, error } = await supabase
+      .from('redemption_history')
+      .select(`
+        *,
+        users!inner(full_name, email),
+        rewards!inner(name, description)
+      `)
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1)
+
+    if (error) {
+      console.error('Error fetching all redemptions:', error)
+      return []
+    }
+    return data || []
+  },
+
+  async updateRedemptionStatus(redemptionId: string, status: RedemptionHistory['status']): Promise<boolean> {
+    return await redemptionService.updateRedemptionStatus(redemptionId, status)
+  },
+
+  // Dashboard Statistics
+  async getDashboardStats(): Promise<any> {
+    try {
+      // Get total users
+      const { count: totalUsers } = await supabase
+        .from('users')
+        .select('*', { count: 'exact', head: true })
+
+      // Get total points
+      const { data: pointsData } = await supabase
+        .from('users')
+        .select('points')
+
+      const totalPoints = pointsData?.reduce((sum, user) => sum + (user.points || 0), 0) || 0
+
+      // Get total redemptions
+      const { count: totalRedemptions } = await supabase
+        .from('redemption_history')
+        .select('*', { count: 'exact', head: true })
+
+      // Get active rewards
+      const { count: activeRewards } = await supabase
+        .from('rewards')
+        .select('*', { count: 'exact', head: true })
+        .eq('is_active', true)
+
+      // Get new users today
+      const today = new Date().toISOString().split('T')[0]
+      const { count: newUsersToday } = await supabase
+        .from('users')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', `${today}T00:00:00.000Z`)
+        .lt('created_at', `${today}T23:59:59.999Z`)
+
+      // Get points issued today
+      const { data: todayTransactions } = await supabase
+        .from('point_transactions')
+        .select('points')
+        .gte('created_at', `${today}T00:00:00.000Z`)
+        .lt('created_at', `${today}T23:59:59.999Z`)
+        .gt('points', 0)
+
+      const pointsIssuedToday = todayTransactions?.reduce((sum, tx) => sum + tx.points, 0) || 0
+
+      return {
+        totalUsers: totalUsers || 0,
+        totalPoints,
+        totalRedemptions: totalRedemptions || 0,
+        activeRewards: activeRewards || 0,
+        newUsersToday: newUsersToday || 0,
+        pointsIssuedToday
+      }
+    } catch (error) {
+      console.error('Error fetching dashboard stats:', error)
+      return {
+        totalUsers: 0,
+        totalPoints: 0,
+        totalRedemptions: 0,
+        activeRewards: 0,
+        newUsersToday: 0,
+        pointsIssuedToday: 0
+      }
+    }
+  }
+}
