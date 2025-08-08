@@ -74,7 +74,7 @@ export const pointsService = {
   // Get user's transaction history
   async getUserTransactions(userId: string, limit = 20): Promise<PointTransaction[]> {
     const { data, error } = await supabase
-      .from('privilege.point_transactions')
+      .from('point_transactions')
       .select('*')
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
@@ -90,7 +90,7 @@ export const pointsService = {
   // Add points transaction
   async addTransaction(transaction: Omit<PointTransaction, 'id' | 'created_at'>): Promise<PointTransaction | null> {
     const { data, error } = await supabase
-      .from('privilege.point_transactions')
+      .from('point_transactions')
       .insert([{
         ...transaction,
         created_at: new Date().toISOString()
@@ -108,7 +108,7 @@ export const pointsService = {
   // Get user's total points from transactions
   async getUserTotalPoints(userId: string): Promise<number> {
     const { data, error } = await supabase
-      .from('privilege.point_transactions')
+      .from('point_transactions')
       .select('points')
       .eq('user_id', userId)
 
