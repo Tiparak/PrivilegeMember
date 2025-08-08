@@ -349,6 +349,78 @@ export const authService = {
     return { user: data.user, error: null }
   },
 
+  // Sign in with Google
+  async signInWithGoogle() {
+    try {
+      console.log('Starting Google OAuth sign in...')
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          }
+        }
+      })
+
+      if (error) {
+        console.error('Google OAuth error:', error)
+        return { user: null, error }
+      }
+
+      return { user: data, error: null }
+    } catch (err) {
+      console.error('Google sign in exception:', err)
+      return { user: null, error: err as any }
+    }
+  },
+
+  // Handle OAuth callback and create user profile if needed
+  async handleOAuthCallback(user: any) {
+    if (!user) return { success: false, error: 'No user provided' }
+
+    try {
+      console.log('Handling OAuth callback for user:', user.id)
+
+      // Check if user profile already exists
+      const existingUser = await userService.getUser(user.id)
+
+      if (!existingUser) {
+        console.log('Creating new user profile for OAuth user')
+
+        // Extract user info from OAuth data
+        const fullName = user.user_metadata?.full_name ||
+                        user.user_metadata?.name ||
+                        `${user.user_metadata?.first_name || ''} ${user.user_metadata?.last_name || ''}`.trim() ||
+                        user.email?.split('@')[0] || 'ผู้ใช้ Google'
+
+        const newUser = await userService.createUser({
+          email: user.email!,
+          full_name: fullName,
+          phone: user.user_metadata?.phone || null,
+          points: 1000, // Welcome bonus
+          member_level: 'bronze'
+        }, user.id)
+
+        if (newUser) {
+          console.log('OAuth user profile created successfully:', newUser)
+          return { success: true, user: newUser }
+        } else {
+          console.error('Failed to create OAuth user profile')
+          return { success: false, error: 'Failed to create user profile' }
+        }
+      } else {
+        console.log('OAuth user profile already exists:', existingUser)
+        return { success: true, user: existingUser }
+      }
+    } catch (err) {
+      console.error('OAuth callback error:', err)
+      return { success: false, error: err }
+    }
+  },
+
   // Sign out
   async signOut() {
     const { error } = await supabase.auth.signOut()
