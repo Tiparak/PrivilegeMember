@@ -38,7 +38,7 @@ export default function Dashboard() {
   ];
 
   const availableRewards = [
-    { id: 1, name: "คูปองส่วนลด 10%", points: 500, description: "ใช้ได้กับสินค้าทุกประเภท", category: "discount" },
+    { id: 1, name: "คูปองส่วนลด 10%", points: 500, description: "��ช้ได้กับสินค้าทุกประเภท", category: "discount" },
     { id: 2, name: "กระเป๋าผ้า Premium", points: 1200, description: "ของพรีเมียมคุณภาพสูง", category: "product" },
     { id: 3, name: "ส่วนลด 20%", points: 2000, description: "ส่วนลดพิเศษสำหรับสมาชิก", category: "discount" },
     { id: 4, name: "บัตรกำนัล 1,000 บาท", points: 5000, description: "บัตรกำนัลช้อปปิ้ง", category: "voucher" },
@@ -93,7 +93,9 @@ export default function Dashboard() {
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">เป้าหมายถัดไป</CardTitle>
+                <CardTitle className="text-lg">
+                  <p>เป้าหมายถัดไป</p>
+                </CardTitle>
                 <Target className="w-6 h-6 text-primary" />
               </div>
             </CardHeader>
@@ -172,7 +174,7 @@ export default function Dashboard() {
                       <div>
                         {milestone.achieved ? (
                           <Badge variant="secondary" className="bg-success/10 text-success border-success/20">
-                            ส��เร็จแล้ว
+                            สำเร็จแล้ว
                           </Badge>
                         ) : userPoints >= milestone.points * 0.8 ? (
                           <Badge variant="secondary" className="bg-warning/10 text-warning border-warning/20">
