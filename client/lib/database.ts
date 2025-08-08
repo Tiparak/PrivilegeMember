@@ -304,19 +304,26 @@ export const authService = {
       if (data.user) {
         console.log('Auth user created, now creating user profile for user ID:', data.user.id)
 
-        const newUser = await userService.createUser({
-          email: data.user.email!,
-          full_name: userData.full_name,
-          phone: userData.phone,
-          points: 1000, // Welcome bonus
-          member_level: 'bronze'
-        }, data.user.id) // Pass the auth user ID
+        try {
+          const newUser = await userService.createUser({
+            email: data.user.email!,
+            full_name: userData.full_name,
+            phone: userData.phone,
+            points: 1000, // Welcome bonus
+            member_level: 'bronze'
+          }, data.user.id) // Pass the auth user ID
 
-        if (!newUser) {
-          console.error('Failed to create user profile')
-          throw new Error('Failed to create user profile')
-        } else {
-          console.log('User profile created successfully with welcome bonus:', newUser)
+          if (!newUser) {
+            console.error('Failed to create user profile - createUser returned null')
+            // Don't throw error, just log it - auth was successful
+            console.warn('User auth created but profile creation failed - user can still login')
+          } else {
+            console.log('User profile created successfully with welcome bonus:', newUser)
+          }
+        } catch (profileError) {
+          console.error('Exception during profile creation:', profileError)
+          // Don't throw error - auth was successful, profile creation can be retried later
+          console.warn('User auth created but profile creation failed - user can still login')
         }
       }
 
