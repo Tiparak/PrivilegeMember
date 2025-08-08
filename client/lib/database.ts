@@ -47,13 +47,8 @@ export const userService = {
   },
 
   // Create new user with direct insert
-  async createUser(userData: Omit<User, 'id' | 'created_at' | 'updated_at'>, authUserId?: string): Promise<User | null> {
+  async createUser(userData: Omit<User, 'id' | 'created_at' | 'updated_at'>, authUserId: string): Promise<User | null> {
     console.log('Creating user with data:', userData, 'Auth User ID:', authUserId)
-
-    if (!authUserId) {
-      console.error('Auth User ID is required for user creation')
-      return null
-    }
 
     try {
       // Create user record with specific ID
@@ -291,7 +286,8 @@ export const authService = {
         email,
         password,
         options: {
-          data: userData
+          data: userData,
+          emailRedirectTo: undefined // Disable email confirmation
         }
       })
 
@@ -311,19 +307,17 @@ export const authService = {
             phone: userData.phone,
             points: 1000, // Welcome bonus
             member_level: 'bronze'
-          }, data.user.id) // Pass the auth user ID
+          }, data.user.id)
 
           if (!newUser) {
             console.error('Failed to create user profile - createUser returned null')
-            // Don't throw error, just log it - auth was successful
-            console.warn('User auth created but profile creation failed - user can still login')
+            return { user: null, error: { message: 'Failed to create user profile' } }
           } else {
             console.log('User profile created successfully with welcome bonus:', newUser)
           }
         } catch (profileError) {
           console.error('Exception during profile creation:', profileError)
-          // Don't throw error - auth was successful, profile creation can be retried later
-          console.warn('User auth created but profile creation failed - user can still login')
+          return { user: null, error: { message: 'Failed to create user profile' } }
         }
       }
 

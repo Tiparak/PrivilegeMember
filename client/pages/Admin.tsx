@@ -304,7 +304,7 @@ export default function Admin() {
             </Card>
           </TabsContent>
 
-          {/* Users Management Tab - will continue in next part */}
+          {/* Users Management Tab */}
           <TabsContent value="users" className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
@@ -386,7 +386,7 @@ export default function Admin() {
                         resetForms();
                       }}>
                         <Save className="w-4 h-4 mr-2" />
-                        บ���นทึก
+                        บันทึก
                       </Button>
                       <Button variant="outline" onClick={() => {
                         setShowUserDialog(false);
@@ -416,7 +416,7 @@ export default function Admin() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {users.map((user) => (
+                    {users.map((user: any) => (
                       <TableRow key={user.id}>
                         <TableCell className="font-medium">{user.email}</TableCell>
                         <TableCell>{user.fullName}</TableCell>
@@ -435,7 +435,7 @@ export default function Admin() {
                         <TableCell>
                           <div className="flex space-x-2">
                             <Button size="sm" variant="outline" onClick={() => {
-                              setEditingUser(user);
+                              setEditingUser(user as any);
                               setUserForm({
                                 email: user.email,
                                 fullName: user.fullName,
@@ -496,6 +496,7 @@ export default function Admin() {
                     </div>
                     <div>
                       <Label htmlFor="rewardDescription">ราย���ะเอียด</Label>
+                      <Label htmlFor="rewardDescription">รายละเอียด</Label>
                       <Textarea
                         id="rewardDescription"
                         value={rewardForm.description}
@@ -564,6 +565,7 @@ export default function Admin() {
                   </TableHeader>
                   <TableBody>
                     {rewards.map((reward) => (
+                    {rewards.map((reward: any) => (
                       <TableRow key={reward.id}>
                         <TableCell className="font-medium">{reward.name}</TableCell>
                         <TableCell className="max-w-xs truncate">{reward.description}</TableCell>
@@ -582,7 +584,7 @@ export default function Admin() {
                         <TableCell>
                           <div className="flex space-x-2">
                             <Button size="sm" variant="outline" onClick={() => {
-                              setEditingReward(reward);
+                              setEditingReward(reward as any);
                               setRewardForm({
                                 name: reward.name,
                                 description: reward.description,
@@ -697,6 +699,7 @@ export default function Admin() {
                   </TableHeader>
                   <TableBody>
                     {milestones.map((milestone) => (
+                    {milestones.map((milestone: any) => (
                       <TableRow key={milestone.id}>
                         <TableCell className="font-medium">{milestone.pointsRequired.toLocaleString()}</TableCell>
                         <TableCell>{milestone.rewardTitle}</TableCell>
@@ -709,7 +712,7 @@ export default function Admin() {
                         <TableCell>
                           <div className="flex space-x-2">
                             <Button size="sm" variant="outline" onClick={() => {
-                              setEditingMilestone(milestone);
+                              setEditingMilestone(milestone as any);
                               setMilestoneForm({
                                 pointsRequired: milestone.pointsRequired.toString(),
                                 rewardTitle: milestone.rewardTitle,
@@ -843,6 +846,7 @@ export default function Admin() {
                   </TableHeader>
                   <TableBody>
                     {redemptions.map((redemption) => (
+                    {redemptions.map((redemption: any) => (
                       <TableRow key={redemption.id}>
                         <TableCell className="font-medium">{redemption.userName}</TableCell>
                         <TableCell>{redemption.rewardName}</TableCell>

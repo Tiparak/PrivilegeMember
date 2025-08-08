@@ -69,7 +69,7 @@ export function SupabaseStatus() {
   };
 
   // Only show in development mode
-  if (!supabaseConfig.isDevelopment) {
+  if (true) { // Always hide the status component
     return null;
   }
 
