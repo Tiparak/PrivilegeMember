@@ -110,7 +110,7 @@ export default function Dashboard() {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-muted-foreground">
-                สวัสดี, Premium User1
+                <p>สวัสดี, Premium User1</p>
               </span>
               <Button variant="outline" size="sm">
                 ออกจากระบบ
@@ -150,7 +150,7 @@ export default function Dashboard() {
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg">
-                  เป้าหมายถัดไป
+                  <p>เป้าหมายถัดไป</p>
                 </CardTitle>
                 <Target className="w-6 h-6 text-primary" />
               </div>
@@ -194,7 +194,7 @@ export default function Dashboard() {
             <TabsTrigger value="milestones">Milestones</TabsTrigger>
             <TabsTrigger value="rewards">รางวัล</TabsTrigger>
             <TabsTrigger value="history">
-              ประวัติ
+              <p>ประวัติ</p>
             </TabsTrigger>
             <TabsTrigger value="profile">โปรไฟล์</TabsTrigger>
           </TabsList>
@@ -331,7 +331,7 @@ export default function Dashboard() {
                             className="px-4"
                           >
                             {userPoints >= reward.points ? (
-                              "แลกคะแนน"
+                              <p>แลกคะแนน</p>
                             ) : (
                               "คะแนนไม่พอ"
                             )}

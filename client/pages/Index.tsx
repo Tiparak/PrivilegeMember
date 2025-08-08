@@ -41,7 +41,7 @@ export default function Index() {
             </div>
             <div className="flex items-center space-x-4">
               <Link to="/login">
-                <Button variant="outline">เข้าสู่ระบบ</Button>
+                <Button variant="outline">เข้า��ู่ระบบ</Button>
               </Link>
               <Link to="/register">
                 <Button>สมัครสมาชิก</Button>
@@ -54,6 +54,11 @@ export default function Index() {
       {/* Hero Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto text-center">
+          {/* Supabase Status (Development only) */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <SupabaseStatus />
+          </div>
+
           <Badge variant="secondary" className="mb-6 px-4 py-2 text-sm">
             <Sparkles className="w-4 h-4 mr-2" />
             ระบบสะสมคะแนนที่ทันสมัย
@@ -149,7 +154,7 @@ export default function Index() {
                 </div>
                 <CardTitle>Milestone Rewards</CardTitle>
                 <CardDescription>
-                  ตั้งค่าระดับคะแนนและรางวัลพิเศษ พร้อมแจ้งเตือนอัตโนมัติ
+                  ตั้ง��่าระดับคะแนนและรางวัลพิเศษ พร้อมแจ้งเตือนอัตโนมัติ
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -162,7 +167,7 @@ export default function Index() {
                 </div>
                 <CardTitle>ระบบแลกรางวัล</CardTitle>
                 <CardDescription>
-                  แลกคะแนนเป็นส่วนลด สินค้า หรือสิทธิพิเศษได้ง่ายๆ
+                  แลกคะแนนเป็นส���วนลด สินค้า หรือสิทธิพิเศษได้ง่ายๆ
                 </CardDescription>
               </CardHeader>
             </Card>

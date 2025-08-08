@@ -146,9 +146,10 @@ export default function Register() {
       if (user) {
         console.log('Registration successful for user:', user.id);
         setSuccess(true);
+        // Navigate to dashboard after success
         setTimeout(() => {
           navigate("/dashboard");
-        }, 1500);
+        }, 2000);
       } else {
         throw new Error('Registration failed - no user returned');
       }
@@ -156,10 +157,8 @@ export default function Register() {
       console.error("Registration error:", err);
 
       // Handle specific error types
-      if (err.message.includes("already registered") || err.message.includes("already been registered") || err.message.includes("User already registered")) {
+      if (err.message.includes("already registered") || err.message.includes("already been registered")) {
         setError("อีเมลนี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น");
-      } else if (err.message.includes("Failed to create user profile")) {
-        setError("เกิดข้อผิดพลาดในการสร้างโปรไฟล์ กรุณาลองใหม่อีกครั้ง");
       } else if (err.message.includes("invalid") || err.message.includes("format")) {
         setError("ข้อมูลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง");
       } else if (err.message.includes("password")) {
@@ -167,7 +166,7 @@ export default function Register() {
       } else if (err.message.includes("email")) {
         setError("รูปแบบอีเมลไม่ถูกต้อง");
       } else {
-        setError("เกิดข้อผิดพลาดในการสมัครสมาชิก กรุณาลองใหม่อีกครั้ง");
+        setError("เกิดข้อผิดพลาดในการสมัครสมาชิก กรุณ��ลองใหม่อีกครั้ง");
       }
     } finally {
       setLoading(false);
