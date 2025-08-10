@@ -1,1 +1,10 @@
-{"code":"rate-limited","message":"You have hit the rate limit. Please upgrade to keep chatting.","providerLimitHit":false,"isRetryable":true}
+import { Placeholder } from "./Placeholder";
+
+export default function Admin() {
+  return (
+    <Placeholder
+      title="Admin Dashboard"
+      description="Administrative tools and settings will be available here."
+    />
+  );
+}
