@@ -1,4 +1,4 @@
-import { Placeholder } from "./Placeholder";
+import Placeholder from "./Placeholder";
 
 export default function Admin() {
   return (
